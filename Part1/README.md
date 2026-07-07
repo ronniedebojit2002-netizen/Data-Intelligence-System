@@ -57,7 +57,7 @@ Both the number and percentage of missing values were computed for every column.
 Several features contained a very high percentage of missing values. The most significant were:
 
 | Feature | Approximate Missing Percentage |
-
+|---------|-------------------------------:|
 | PoolQC | 99.5% |
 | MiscFeature | 96.3% |
 | Alley | 93.8% |
@@ -243,7 +243,7 @@ The two numerical features with the highest absolute skewness were:
 The mean and median values were compared before imputation.
 
 | Feature | Mean | Median |
-
+|---------|-----:|-------:|
 | MiscVal | 43.489 | 0 |
 | PoolArea | 2.759 | 0 |
 
@@ -261,8 +261,8 @@ Unlike Pearson correlation, Spearman correlation measures monotonic relationship
 
 The three variable pairs with the largest absolute difference between Spearman and Pearson correlations were:
 
-| Variable Pair | |Spearman − Pearson| |
-
+| Variable Pair | \|Spearman − Pearson\| |
+|---------------|-----------------------:|
 | LotFrontage ↔ LotArea | 0.2496 |
 | LotArea ↔ BedroomAbvGr | 0.2181 |
 | LotArea ↔ TotRmsAbvGrd | 0.2159 |
