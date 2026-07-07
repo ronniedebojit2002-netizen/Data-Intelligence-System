@@ -4,9 +4,13 @@
 
 **Name:** Debojit Lahiri
 
+---
+
 # Objective
 
 The objective of Part 3 is to evaluate multiple advanced machine learning models for binary house price classification using the cleaned Ames Housing dataset. This part focuses on ensemble learning, hyperparameter tuning, model comparison using cross-validation, feature importance analysis, pipeline creation, model serialization, and learning curve analysis.
+
+---
 
 # Dataset
 
@@ -23,6 +27,8 @@ HighPrice is created by converting SalePrice into a binary target using the medi
 HighPrice = (SalePrice > SalePrice.median()).astype(int)
 ```
 
+---
+
 # 1. Decision Tree Baseline
 
 A Decision Tree classifier was trained using the default parameters.
@@ -30,13 +36,15 @@ A Decision Tree classifier was trained using the default parameters.
 ### Results
 
 | Metric | Value |
-
+|--------|-------|
 | Training Accuracy | **1.0000** |
 | Testing Accuracy | **0.8973** |
 
 ### Interpretation
 
 The baseline Decision Tree perfectly classified the training data but performed worse on the testing data. This indicates **overfitting**. Decision Trees are considered **high variance models** because they greedily split the data at each node without revisiting previous decisions, making them highly sensitive to the training dataset.
+
+---
 
 # 2. Controlled Decision Tree
 
@@ -48,7 +56,7 @@ A second Decision Tree was trained using:
 ### Results
 
 | Metric | Value |
-
+|--------|-------|
 | Training Accuracy | **0.9272** |
 | Testing Accuracy | **0.8767** |
 
@@ -66,6 +74,8 @@ Limits the maximum depth of the tree. Smaller trees reduce variance but may intr
 
 Prevents splitting nodes that contain very few samples, reducing noisy decisions and improving generalization.
 
+---
+
 # 3. Gini vs Entropy
 
 Two Decision Trees were trained using different splitting criteria.
@@ -73,7 +83,7 @@ Two Decision Trees were trained using different splitting criteria.
 ### Results
 
 | Criterion | Test Accuracy |
-
+|-----------|--------------|
 | Gini | **0.8938** |
 | Entropy | **0.9007** |
 
@@ -93,6 +103,8 @@ Entropy = -\sum p_i \log_2(p_i)
 
 A Gini value of **0** indicates that every sample in the node belongs to a single class.
 
+---
+
 # 4. Random Forest
 
 Random Forest was trained using:
@@ -104,7 +116,7 @@ Random Forest was trained using:
 ### Results
 
 | Metric | Value |
-
+|--------|-------|
 | Training Accuracy | **0.9957** |
 | Testing Accuracy | **0.9452** |
 | ROC-AUC | **0.9844** |
@@ -112,7 +124,7 @@ Random Forest was trained using:
 ## Top Five Important Features
 
 | Feature | Importance |
-
+|---------|-----------|
 | GrLivArea | 0.0839 |
 | YearBuilt | 0.0605 |
 | OverallQual | 0.0593 |
@@ -129,6 +141,8 @@ Random Forest uses **Bootstrap Aggregating (Bagging)**.
 
 Each tree is trained on a random sample of the training data selected **with replacement**. At every split, only a random subset of features is considered. Averaging predictions from many independent trees reduces variance and improves generalization compared to a single Decision Tree.
 
+---
+
 # 5. Gradient Boosting
 
 Gradient Boosting was trained using:
@@ -140,12 +154,14 @@ Gradient Boosting was trained using:
 ### Results
 
 | Metric | Value |
-
+|--------|-------|
 | Training Accuracy | **0.9889** |
 | Testing Accuracy | **0.9452** |
 | ROC-AUC | **0.9857** |
 
 Gradient Boosting slightly outperformed Random Forest in ROC-AUC while maintaining identical testing accuracy.
+
+---
 
 # 6. Feature Ablation Study
 
@@ -162,7 +178,7 @@ The five least important features identified by the Random Forest were removed.
 ### Results
 
 | Model | ROC-AUC |
-
+|-------|---------|
 | Full Model | **0.9845** |
 | Reduced Model | **0.9840** |
 
@@ -170,12 +186,14 @@ The five least important features identified by the Random Forest were removed.
 
 The reduced model achieved nearly identical performance, indicating that the removed features contributed very little predictive information. Removing such features simplifies deployment while maintaining almost the same predictive performance.
 
+---
+
 # 7. Cross Validation
 
 Five-fold Stratified Cross Validation was performed using ROC-AUC.
 
 | Model | Mean AUC | Std AUC |
-
+|------|---------|--------|
 | Logistic Regression | **0.9658** | 0.0119 |
 | Controlled Decision Tree | **0.9210** | 0.0127 |
 | Random Forest | **0.9803** | 0.0044 |
@@ -184,6 +202,8 @@ Five-fold Stratified Cross Validation was performed using ROC-AUC.
 ### Interpretation
 
 Cross-validation provides a more reliable estimate of generalization performance because every sample is used for both training and validation across multiple folds. Random Forest achieved the highest average ROC-AUC with the smallest standard deviation, indicating both high accuracy and stable performance.
+
+---
 
 # 8. Hyperparameter Tuning
 
@@ -221,10 +241,12 @@ Using 5-fold cross-validation:
 
 Grid Search evaluates every possible parameter combination and therefore guarantees finding the best configuration within the search space. Randomized Search evaluates only a random subset of combinations, making it faster but less exhaustive.
 
+---
+
 # 9. Learning Curve
 
 | Training Fraction | Training AUC | Testing AUC |
-
+|------------------|-------------|------------|
 | 20% | 1.0000 | 0.9798 |
 | 40% | 1.0000 | 0.9825 |
 | 60% | 0.99999 | 0.9844 |
@@ -234,6 +256,8 @@ Grid Search evaluates every possible parameter combination and therefore guarant
 ### Interpretation
 
 Training AUC decreased very slightly as more training data was used, which is expected because larger datasets reduce overfitting. Test AUC increased initially and then plateaued near 0.984, indicating that the model is approaching its maximum performance. This suggests the current model is more **capacity-limited** than **data-limited**, meaning additional data alone is unlikely to produce substantial improvements.
+
+---
 
 # Model Serialization
 
@@ -256,7 +280,7 @@ Predictions on two test samples were successfully generated without errors.
 # Final Model Comparison
 
 | Model | Test AUC |
-
+|------|---------|
 | Logistic Regression | 0.9663 |
 | Decision Tree | 0.9007 |
 | Random Forest | 0.9844 |
