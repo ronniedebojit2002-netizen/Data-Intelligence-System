@@ -4,15 +4,21 @@
 
 **Name:** Debojit Lahiri
 
+---
+
 # Chosen Track
 
 **Track C – Model Prediction Explanation Pipeline**
 
 This track extends the machine learning model developed in Part 3 by using a Large Language Model (LLM) to generate structured, human-readable explanations for model predictions. The best-performing model is loaded, predictions are generated, and the LLM explains each prediction in a validated JSON format.
 
+---
+
 # Objective
 
 The objective of Part 4 is to integrate an LLM with the trained machine learning pipeline. The LLM receives feature values, the predicted class, and the prediction probability, then returns a structured JSON explanation describing the prediction. JSON schema validation and PII guardrails are implemented to ensure safe and reliable outputs.
+
+---
 
 # API Configuration
 
@@ -25,6 +31,8 @@ os.environ["LLM_API_KEY"] = getpass("Enter your API Key: ")
 ```
 
 No API keys were hardcoded in the notebook or committed to GitHub.
+
+---
 
 # Reusable LLM Function
 
@@ -51,6 +59,8 @@ hello
 ```
 
 confirming that the API connection worked correctly.
+
+---
 
 # System Prompt
 
@@ -80,6 +90,8 @@ Do not include markdown.
 Do not include explanations outside JSON.
 ```
 
+---
+
 # User Prompt Template
 
 For each prediction the following information was sent to the LLM.
@@ -97,6 +109,8 @@ Prediction Probability:
 
 The feature values were automatically converted into JSON before being included in the prompt.
 
+---
+
 # Why Temperature = 0?
 
 Temperature was set to **0** because this task requires deterministic structured outputs.
@@ -105,16 +119,20 @@ At temperature 0 the model consistently selects the highest-probability token, p
 
 Higher temperatures introduce randomness, making structured JSON generation less reliable.
 
+---
+
 # Temperature Comparison
 
 Each prediction was evaluated twice.
 
 | Temperature | Behaviour |
-
+|------------|-----------|
 | **0.0** | Deterministic, highly consistent JSON output |
 | **0.7** | More varied wording and reasoning while maintaining the same prediction |
 
 Temperature 0 consistently produced outputs that matched the expected schema with minimal variation, making it the preferred setting for structured explanation tasks.
+
+---
 
 # JSON Output Schema
 
@@ -137,6 +155,8 @@ After every LLM response:
 3. The parsed object was validated using `jsonschema.validate()`.
 4. Validation errors were handled using `try-except`.
 5. If validation failed, a fallback dictionary containing null values was returned.
+
+---
 
 # Prediction Pipeline
 
@@ -168,6 +188,8 @@ predict_proba()
 
 7. Validate the JSON against the predefined schema.
 
+---
+
 # PII Guardrail
 
 Before every API request a regular expression checked the prompt for personally identifiable information.
@@ -180,7 +202,7 @@ The guardrail detects:
 Example:
 
 | Input | Result |
-
+|-------|--------|
 | "Contact me at student@gmail.com" | **Blocked** |
 | "This house has four bedrooms." | **Allowed** |
 
@@ -206,11 +228,12 @@ For each sample:
 - The JSON schema validation succeeded.
 
 | Sample | Prediction | JSON Validation | Guardrail |
-
+|--------|-----------|----------------|-----------|
 | Sample 1 | Successful | Pass | Allowed |
 | Sample 2 | Successful | Pass | Allowed |
 | Sample 3 | Successful | Pass | Allowed |
 
+---
 
 # Structured Output Validation
 
@@ -222,6 +245,7 @@ Schema validation completed successfully for all three examples.
 
 No fallback responses were required.
 
+---
 
 # Safety Considerations
 
@@ -235,6 +259,8 @@ Several safety measures were implemented.
 - Deterministic prompting using temperature = 0.
 
 These measures improve both reliability and security of the deployed pipeline.
+
+---
 
 # Conclusion
 
